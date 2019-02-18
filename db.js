@@ -20,11 +20,11 @@ async function query(q, values = []) {
 
 async function insert(data) {
   const q = `
-INSERT INTO applications
-(name, email, phone, text, job)
+INSERT INTO users
+(username, password, name, email, admin)
 VALUES
 ($1, $2, $3, $4, $5)`;
-  const values = [data.name, data.email, data.phone, data.text, data.job];
+  const values = [data.username, data.password, data.name, data.email, data.admin];
 
   return query(q, values);
 }

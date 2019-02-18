@@ -1,0 +1,35 @@
+<%- include('header') -%>
+
+<h1>Nýskráning</h1>
+
+<form method="post" action="/register">
+  <div class="field<%= locals.isInvalid('name', data.errors) ?  ' field--invalid' : '' %>">
+    <label for="name">Nafn</label>
+    <input type="text" name="name" id="name" value="<%= data.name %>" class="">
+  </div>
+  <div class="field<%= locals.isInvalid('email', data.errors) ?  ' field--invalid' : '' %>">
+    <label for="email">Netfang</label>
+    <input type="text" name="email" id="email" value="<%= data.email %>" class="">
+  </div>
+  <div class="field<%= locals.isInvalid('name', data.errors) ?  ' field--invalid' : '' %>">
+    <label for="username">Notendanafn</label>
+    <input type="text" name="username" id="username" value="<%= data.username %>" class="">
+  </div>
+  <div class="field<%= locals.isInvalid('text', data.errors) ?  ' field--invalid' : '' %>">
+    <label for="password">Lykilorð</label>
+    <textarea name="password" id="password"><%= data.password %></textarea>
+  </div>
+
+  <% if (data.errors.length > 0) { %>
+    <h2>Vandræði við að senda umsókn:</h2>
+    <ul class="errors">
+      <% data.errors.forEach((error) => { %>
+        <li class="error"><label for="<%= error.param %>"><%= error.msg %></label></li>
+      <% }); %>
+    </ul>
+  <% } %>
+
+  <button>Skrá notenda</button>
+</form>
+
+<%- include('footer') -%>

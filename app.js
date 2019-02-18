@@ -9,6 +9,7 @@ const admin = require('./admin');
 const applications = require('./applications');
 
 /* todo sækja stillingar úr env */
+const sessionSecret = process.env.SESSION_SECRET;
 
 if (!sessionSecret) {
   console.error('Add SESSION_SECRET to .env');
