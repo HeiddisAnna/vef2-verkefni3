@@ -7,6 +7,7 @@ const apply = require('./apply');
 const register = require('./register');
 const admin = require('./admin');
 const applications = require('./applications');
+const validateLogin = require('./login');
 
 /* todo sækja stillingar úr env */
 const sessionSecret = process.env.SESSION_SECRET;
@@ -42,11 +43,18 @@ app.locals.isInvalid = isInvalid;
 
 /* todo setja upp login og logout virkni */
 
-function login(req, res){
-  res.render('login', { title: 'Login', username: '', password: '', errors: [] });
+function thanks(req, res) {
+  res.redirect('/login');
 }
 
-app.use('/login', login);
+function login(req, res) {
+
+  res.render('login', { title: 'login', username: '', password: '', errors: [] });
+}
+
+app.get('/login', login);
+app.get('/thanks', thanks);
+app.use('/login', validateLogin);
 app.use('/', apply);
 app.use('/register', register);
 app.use('/applications', applications);
@@ -60,8 +68,6 @@ function errorHandler(error, req, res, next) { // eslint-disable-line
   console.error(error);
   res.status(500).render('error', { page: 'error', title: 'Villa', error });
 }
-
-
 
 app.use(notFoundHandler);
 app.use(errorHandler);
