@@ -11,6 +11,7 @@ CREATE TABLE applications (
 );
 
 CREATE TABLE users (
+  id serial primary key,
   username varchar(128) not null,
   password varchar(128) not null, 
   name varchar(128) not null,

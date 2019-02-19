@@ -16,8 +16,12 @@
     <input type="text" name="username" id="username" value="<%= data.username %>" class="">
   </div>
   <div class="field<%= locals.isInvalid('text', data.errors) ?  ' field--invalid' : '' %>">
-    <label for="password">Lykilorð</label>
-    <textarea name="password" id="password"><%= data.password %></textarea>
+    <label for="password1">Lykilorð</label>
+    <input type="password" name="password1" id="password1" value="<%= data.password1 %>" class="">
+  </div>
+  <div class="field<%= locals.isInvalid('text', data.errors) ?  ' field--invalid' : '' %>">
+    <label for="password2">Lykilorð</label>
+    <input type="password" name="password2" id="password2" value="<%= data.password2 %>" class="">
   </div>
 
   <% if (data.errors.length > 0) { %>
