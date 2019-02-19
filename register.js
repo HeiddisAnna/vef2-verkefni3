@@ -50,9 +50,7 @@ const validations = [
   check('email').isEmail().withMessage('Netfang verður að vera netfang'),
   check('username').isLength({ min:1 }).withMessage('Notandanafn má ekki vera tómt'),
   check('password1').isLength({ min: 8 }).withMessage('Lykilorð verður að vera minnst 8 stafir'),
-  //check('password1').custom((val => {
-    //return val1 === val2;
-  //}).withMessage('Lykilorðin verða að vera eins'),
+  check('password1').custom((val, { req }) => val === req.body.password2).withMessage('Lykilorðin verða að vera eins'),
 ]
 
 async function register(req, res) {
@@ -65,10 +63,7 @@ async function register(req, res) {
     admin: false,
     errors: [],
   };
- 
-  //data.title = 'Nýskráning';
-
-  res.render('register',{ title: 'Nýskráning', data });
+  res.render('register', { title: 'Nýskráning', data });
 }
 
 function showErrors(req, res, next) {
@@ -85,7 +80,8 @@ function showErrors(req, res, next) {
 
   const data = {
     username, 
-    password1, 
+    password1,
+    password2, 
     name, 
     email,
     admin,
@@ -116,24 +112,25 @@ async function registerPost(req, res) {
     } = {},
   } = req;
 
+  
   const data = {
-    username, 
-    password1, 
+    username,  
     name, 
     email,
     admin,
   };
+  data.password = password1;
 
   await insert(data);
-  return res.render('/thanks');
+  return res.redirect('register/thanks');
 }
 
 function thanks(req, res) {
-  res.render('thanks');
+  res.render('thanks', { title: 'Takk' });
 }
 
-router.get('/thanks', thanks);
 router.get('/', register);
+router.get('/thanks', thanks);
 router.post('/', validations, showErrors, sanitazions, catchErrors(registerPost));
 
 module.exports = router;
