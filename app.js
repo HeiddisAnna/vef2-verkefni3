@@ -42,6 +42,11 @@ app.locals.isInvalid = isInvalid;
 
 /* todo setja upp login og logout virkni */
 
+function login(req, res){
+  res.render('login', { title: 'Login', username: '', password: '', errors: [] });
+}
+
+app.use('/login', login);
 app.use('/', apply);
 app.use('/register', register);
 app.use('/applications', applications);
@@ -55,6 +60,8 @@ function errorHandler(error, req, res, next) { // eslint-disable-line
   console.error(error);
   res.status(500).render('error', { page: 'error', title: 'Villa', error });
 }
+
+
 
 app.use(notFoundHandler);
 app.use(errorHandler);

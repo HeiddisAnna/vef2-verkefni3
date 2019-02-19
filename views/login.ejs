@@ -2,8 +2,8 @@
 
 <form method="get" action="/login">
   <div class="field<%= locals.isInvalid('name', errors) ?  ' field--invalid' : '' %>">
-    <label for="name">Notendanafn</label>
-    <input type="text" name="name" id="name" value="<%= name %>" class="">
+    <label for="username">Notendanafn</label>
+    <input type="text" name="username" id="username" value="<%= username %>" class="">
   </div>
   <div class="field<%= locals.isInvalid('email', errors) ?  ' field--invalid' : '' %>">
     <label for="password">Lykilorð</label>
