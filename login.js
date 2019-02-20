@@ -9,12 +9,11 @@ const users = require('./users');
 
 const app = express.Router();
 
-app.use(express.urlencoded({ extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
 async function start(username, password, done) {
   try {
     const user = await users.findByUsername(username);
-      
     if (!user) {
       return done(null, false);
     }
@@ -72,14 +71,15 @@ app.get('/login', (req, res) => {
   let message = '';
 
   if (req.session.message && req.session.message.length > 0) {
-      message = req.session.message.join(', ');
-      req.session.message = [];
+    message = req.session.message.join(', ');
+    req.session.message = [];
   }
 
-  res.render('login', message);  
+  res.render('login', message);
 });
 
-app.post('/login', passport.authenticate('local', {
+app.post('/login',
+  passport.authenticate('local', {
     failureMessage: 'Notandi eða lykilorð vitlaust.', 
     failureRedirect: '/login',
   }),
@@ -94,5 +94,5 @@ app.get('logout', (req, res) => {
 });
 
 app.get('/applicatons', ensureLoggedIn, (req, res) => {
-    res.render('/applications', applications);
+  res.render('/applications', applications);
 });
