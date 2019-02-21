@@ -14,17 +14,20 @@
     </header>
     <main>
       <div class= "header">
-          
-
-
         <% if (locals.user){ %>
-          <p>Er innskráð !!!</p>
-
+          <div>
+            <a class="<%= page === 'apply'? 'thisPage':''%>" href="./">Atvinnuumsókn</a>
+            <a class="<%= page === 'applications'? 'thisPage':''%>" href="./applications">Umsóknir</a>
+            <a class="<%= page === 'admin'? 'thisPage':''%>" href="./admin">Notendur</a>
+          </div>
+          <div>
+            <p><%- locals.user.username %></p>
+          </div>
         <% } else { %>
 
             <a class="<%= page === 'apply'? 'thisPage':''%>" href="./">Atvinnuumsókn</a>
-            <a href="./login">Innskráning</a>
-            <a href="./register">Nýskráning</a>
+            <a class="<%= page === 'login'? 'thisPage':''%>" href="./login">Innskráning</a>
+            <a class="<%= page === 'register'? 'thisPage':''%>" href="./register">Nýskráning</a>
         <% } %>
       </div>
       

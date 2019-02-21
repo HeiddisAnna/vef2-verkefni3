@@ -26,7 +26,7 @@ app.use(session({
   secret: sessionSecret,
   resave: false,
   saveUninitialized: false,
-  maxAge: 30 * 60 *24 * 1000, // 20 sek
+  maxAge: 30 * 60 * 24 * 1000,
 }));
 
 app.use(express.urlencoded({ extended: true }));
@@ -126,7 +126,7 @@ app.get('/', (req, res) => {
   if (req.isAuthenticated()) {
     return res.redirect('/applications', applications);
   }
-  return res.redirect('/login');  
+  return res.redirect('/login');
 });
 
 app.get('/login', (req, res) => {

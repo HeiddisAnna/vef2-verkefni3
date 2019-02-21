@@ -6,4 +6,19 @@
     <button>Innskráning</button>
 </form>
 
+
+<% list.forEach((userInfo) => { %>
+  <% if(locals.isAdmin) { %>
+    <div>
+      <p><%- userInfo.admin -%></p>
+    </div>
+  <% } %>
+    <div class="application">
+      <p><%= userInfo.username %></p>
+      <p><%= userInfo.name %></p>
+      <p><%= userInfo.email %></p>
+    </div>
+  <% }); %>
+
+
 <%- include('footer') -%>

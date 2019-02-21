@@ -24,13 +24,6 @@ function catchErrors(fn) {
 async function applications(req, res) {
   const list = await select();
 
-  /*
-  const data = {
-    title: 'Umsóknir',
-    list,
-  };
-  */
-
   return res.render('applications', { title: 'Umsóknir', list, page:'application' });
 }
 
@@ -44,7 +37,7 @@ async function applications(req, res) {
 async function processApplication(req, res) {
   const { id } = req.body;
 
-  await update(id);
+  await update([id]);
 
   return res.redirect('/applications');
 }
@@ -59,7 +52,7 @@ async function processApplication(req, res) {
 async function deleteApplication(req, res) {
   const { id } = req.body;
 
-  await deleteRow(id);
+  await deleteRow([id]);
 
   return res.redirect('/applications');
 }
