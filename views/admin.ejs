@@ -2,23 +2,44 @@
 
 <h1>Nýskráning tókst</h1>
 
-<form method="get" action="/admin">
-    <button>Innskráning</button>
-</form>
-
-
-<% list.forEach((userInfo) => { %>
-  <% if(locals.isAdmin) { %>
-    <div>
-      <p><%- userInfo.admin -%></p>
+<% if (locals.isAdmin){ %>
+  <form method="get" action="/admin">
+    <div class="admin">
+      <div class = users>
+        <div class="adminUserHead"><p>Stjórnandi</p></div>
+        <div class="adminUserHead"><p>Notendanafn</p></div>
+        <div class="adminUserHead"><p>Nafn</p></div>
+        <div class="adminUserHead"><p>Netfang</p></div>
+      </div>
+      <% list.forEach((userInfo) => { %>
+        <div class="users">
+            <div class="adminUserInfo"><p><%= userInfo.admin %></p></div>
+            <div class="adminUserInfo"><p><%= userInfo.username %></p></div>
+            <div class="adminUserInfo"><p><%= userInfo.name %></p></div>
+            <div class="adminUserInfo"><p><%= userInfo.email %></p></div>
+        </div>
+      <button>Uppfæra stjórnendur</button>
     </div>
-  <% } %>
-    <div class="application">
-      <p><%= userInfo.username %></p>
-      <p><%= userInfo.name %></p>
-      <p><%= userInfo.email %></p>
-    </div>
+  </form>
   <% }); %>
+<% } else { %>
+  <div class="admin">
+    <div class = users>
+      <div class="userHead"><p>Notendanafn</p></div>
+      <div class="userHead"><p>Nafn</p></div>
+      <div class="userHead"><p>Netfang</p></div>
+    </div>
+    <% list.forEach((userInfo) => { %>
+      <div class="users">
+        <div class="userInfo"><p><%= userInfo.username %></p></div>
+        <div class="userInfo"><p><%= userInfo.name %></p></div>
+        <div class="userInfo"><p><%= userInfo.email %></p></div>
+      </div>
+    <% }); %>
+  </div>
+<% } %>
+
+
 
 
 <%- include('footer') -%>
