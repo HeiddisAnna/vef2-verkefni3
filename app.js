@@ -12,6 +12,8 @@ const register = require('./register');
 const admin = require('./admin');
 const applications = require('./applications');
 
+DATABASE_URL=//postgres:Esjan2020@localhost/v2
+
 /* todo sækja stillingar úr env */
 const sessionSecret = process.env.SESSION_SECRET;
 
