@@ -11,8 +11,6 @@ function catchErrors(fn) {
 /* Ef notandi er loggaður inn fer hann á næstu, 
 annars er hann ennþá í log in */
 function ensureLoggedIn(req, res, next) {
-  console.log(req.isAuthenticated());
-  
   if(req.isAuthenticated()) {
     return next();
   }

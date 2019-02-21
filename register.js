@@ -125,8 +125,6 @@ async function registerPost(req, res) {
   };
   data.password = password1;
 
-  console.log('lykilorð: ' + data.password);
-
   await insert(data);
 
   return res.redirect('register/thanks');
