@@ -83,8 +83,20 @@ async function findById(id) {
     const found = result.rows[0];
     return Promise.resolve(found);
   } 
-
   return Promise.resolve(null);
+}
+
+async function setAdminFalse() {
+  const q = `UPDATE users SET admin = false WHERE admin = true`;
+  const done = await query(q);
+}
+
+async function setAdmin(usernames) {
+  const q = 'UPDATE users SET admin = true WHERE username = $1';
+  console.log(usernames);
+  for(let i=0; i<usernames.length; i++){
+    const result = await query(q, [usernames[i]]);
+  }
 }
 
 
@@ -97,5 +109,7 @@ module.exports = {
   comparePassword,
   findByUsername,
   findById,
+  setAdmin,
+  setAdminFalse,
 };
 

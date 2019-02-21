@@ -2,8 +2,8 @@
 
 <h1>Nýskráning tókst</h1>
 
-<% if (!locals.isAdmin){ %>
-  <form method="get" action="/admin">
+<% if (locals.isAdmin){ %>
+  <form method="post" action="/admin">
     <div class="admin">
       <div class = users>
         <div class="adminUserHead"><p>Stjórnandi</p></div>
@@ -13,7 +13,7 @@
       </div>
       <% list.forEach((userInfo) => { %>
         <div class="users">
-            <div class="adminUserInfo"><input type="checkbox" name="admin" <%= userInfo.admin === true ? 'checked' : '' %>></div>
+            <div class="adminUserInfo"><input type="checkbox" value="<%- userInfo.username %>" name="admin" <%= userInfo.admin === true ? 'checked' : '' %>></div>
             <div class="adminUserInfo"><p><%= userInfo.username %></p></div>
             <div class="adminUserInfo"><p><%= userInfo.name %></p></div>
             <div class="adminUserInfo"><p><%= userInfo.email %></p></div>
