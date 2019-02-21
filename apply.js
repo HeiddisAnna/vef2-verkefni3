@@ -102,9 +102,8 @@ function form(req, res) {
     text: '',
     job: '',
     errors: [],
-    
   };
-  res.render('form', data);
+  res.render('form', { data, page: 'apply' });
 }
 
 /**
@@ -142,7 +141,7 @@ function showErrors(req, res, next) {
     data.errors = errors;
     data.title = 'Avinnuumsókn – vandræði';
 
-    return res.render('form', data);
+    return res.render('form', { title: data.title, data, page: 'apply' });
   }
 
   return next();
@@ -186,7 +185,7 @@ async function formPost(req, res) {
  * @param {object} res Response hlutur
  */
 function thanks(req, res) {
-  return res.render('thanks', { title: 'Takk fyrir umsóknina' });
+  return res.render('thanks', { title: 'Takk fyrir umsóknina', page: 'thanks' });
 }
 
 router.get('/', form);

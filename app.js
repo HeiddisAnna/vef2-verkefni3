@@ -60,11 +60,11 @@ function thanks(req, res) {
 }
 
 function login(req, res) {
-  res.render('login', { title: 'login', username: '', password: '', errors: [] });
+  res.render('login', { title: 'login', username: '', password: '', errors: [], page: 'login' });
 }
 
 function thanksApplicaton(req, res) {
-  res.render('thanks', { title: 'Takk fyrir umsóknina'});
+  res.render('thanks', { title: 'Takk fyrir umsóknina', page: 'thanks' });
 }
 
 function notFoundHandler(req, res, next) { // eslint-disable-line
@@ -136,7 +136,7 @@ app.get('/login', (req, res) => {
     req.session.message = [];
   }
   */
-  res.render('login', { title: 'innskraning', username: '', password: '', errors: [] });
+  res.render('login', { title: 'innskraning', username: '', password: '', errors: [], page: 'login' });
 });
 
 app.post('/login',

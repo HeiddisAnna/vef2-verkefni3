@@ -14,7 +14,7 @@ function catchErrors(fn) {
 }
 
 function admin(req, res) {
-  res.render('admin', { title: 'Takk' });
+  res.render('admin', { title: 'Takk', page: 'admin' });
 }
 
 router.get('/', ensureLoggedIn, admin);
