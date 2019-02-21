@@ -22,6 +22,7 @@
           </div>
           <div>
             <p><%- locals.user.username %></p>
+            <a class='logOut' href="./logout">Log out</a>
           </div>
         <% } else { %>
             <a class="<%= page === 'apply'? 'thisPage':'page'%>" href="./">Atvinnuumsókn</a>
