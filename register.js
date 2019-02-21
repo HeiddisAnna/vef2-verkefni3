@@ -4,7 +4,7 @@ const { check, validationResult } = require('express-validator/check');
 const { sanitize } = require('express-validator/filter');
 const bcrypt = require('bcrypt');
 
-const { insert, validPassword, query } = require('./users');
+const { insert, query } = require('./users');
 
 const router = express.Router();
 
@@ -129,11 +129,12 @@ async function registerPost(req, res) {
     email,
     admin,
   };
-  data.password = bcrypt(password1);
+  data.password = password1;
 
-  console.log('bcryptað lykilorð: ' + data.password);
+  console.log('lykilorð: ' + data.password);
 
   await insert(data);
+
   return res.redirect('register/thanks');
 }
 

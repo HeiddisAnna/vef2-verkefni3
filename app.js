@@ -53,14 +53,14 @@ function thanks(req, res) {
 }
 
 function login(req, res) {
-  res.render('login', { title: 'login', username: '', password: '', message: '' });
+  res.render('login', { title: 'login', username: '', password: '', errors: [] });
 }
 
 app.get('/login', login);
 app.get('/thanks', thanks);
 app.use('/', apply);
 app.use('/register', register);
-// app.use('/applications', applications);
+app.use('/applications', applications);
 app.use('/admin', admin);
 
 function notFoundHandler(req, res, next) { // eslint-disable-line
@@ -92,8 +92,6 @@ async function start(username, password, done) {
 passport.use(new Strategy(start));
 
 passport.serializeUser((user, done) => {
-  console.log('user.id: ' + user.id);
-  console.log('user: ' + user);
   done(null, user.id);
 });
 
@@ -116,6 +114,10 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get('admin', ensureLoggedIn, (req, res, next) => {
+  next();
+});
+
 /* Ef notandi er loggaður inn fer hann á næstu, 
 annars er hann ennþá í log in */
 function ensureLoggedIn(req, res, next) {
@@ -133,14 +135,15 @@ app.get('/', (req, res) => {
 });
 
 app.get('/login', (req, res) => {
+  /* 
   let message = '';
-
+  
   if (req.session.message && req.session.message.length > 0) {
     message = req.session.message.join(', ');
     req.session.message = [];
   }
-
-  res.send('login', { title: 'innskraning', message });
+  */
+  res.send('login', { title: 'innskraning', errors: [] });
 });
 
 app.post('/login',
@@ -149,7 +152,7 @@ app.post('/login',
     failureRedirect: '/login',
   }),
   (req, res) => {
-    res.redirect('/applications');
+    res.redirect('/admin');
   },
 );
 
@@ -158,7 +161,7 @@ app.get('logout', (req, res) => {
   res.redirect('/');
 });
 
-app.get('/applicatons', ensureLoggedIn, (req, res) => {
+app.get('/admin', ensureLoggedIn, (req, res) => {
   app.use('/applications', applications);
 });
 

@@ -20,12 +20,14 @@ async function query(q, values = []) {
 }
 
 async function insert(data) {
+  const hashedPassword = await bcrypt.hash(data.password, 11);
+
   const q = `
-INSERT INTO users
-(username, password, name, email, admin)
-VALUES
-($1, $2, $3, $4, $5)`;
-  const values = [data.username, data.password, data.name, data.email, data.admin];
+  INSERT INTO users
+  (username, password, name, email, admin)
+  VALUES
+  ($1, $2, $3, $4, $5)`;
+  const values = [data.username, hashedPassword, data.name, data.email, data.admin];
 
   return query(q, values);
 }
@@ -52,7 +54,10 @@ async function deleteRow(id) {
 }
 
 async function comparePassword(password, user) {
+  // const ok = await bcrypt.compare(password, user.password);
   const ok = await bcrypt.compare(password, user.password);
+
+  console.log('ok er: ' + ok);
 
   if (ok) {
     return user;
@@ -91,8 +96,8 @@ module.exports = {
   select,
   update,
   deleteRow, // delete er frátekið orð
-  comparePassword, 
-  findByUsername, 
-  findById
+  comparePassword,
+  findByUsername,
+  findById,
 };
 

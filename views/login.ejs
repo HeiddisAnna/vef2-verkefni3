@@ -10,7 +10,14 @@
     <input type="password" name="password" id="password" value="<%= password %>" class="">
   </div>
 
-  <p><%- message %></p>
+  <% if (errors.length > 0) { %>
+    <h2>Vandræði við að senda umsókn:</h2>
+    <ul class="errors">
+      <% errors.forEach((error) => { %>
+        <li class="error"><label for="<%= error.param %>"><%= error.msg %></label></li>
+      <% }); %>
+    </ul>
+  <% } %>
 
   <button>login</button>
 </form>
