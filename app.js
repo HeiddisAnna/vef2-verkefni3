@@ -120,9 +120,11 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use('/', apply);
+
 app.get('/', (req, res) => {
   if (req.isAuthenticated()) {
-    return res.send('/applications', applications);
+    return res.redirect('/applications', applications);
   }
   return res.redirect('/login');  
 });
@@ -156,7 +158,7 @@ app.get('logout', (req, res) => {
 
 app.use('/thanks', thanksApplicaton);
 app.get('/thanks', thanks);
-app.use('/', apply);
+// app.use('/', apply);
 app.use('/register', register);
 app.use('/applications', applications);
 app.use('/admin', admin);

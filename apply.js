@@ -95,7 +95,6 @@ const sanitazions = [
  */
 function form(req, res) {
   const data = {
-    title: 'Atvinnuumsókn',
     name: '',
     email: '',
     phone: '',
@@ -103,7 +102,7 @@ function form(req, res) {
     job: '',
     errors: [],
   };
-  res.render('form', { data, page: 'apply' });
+  res.render('form', { title: 'Atvinnuumsókn', data, page: 'apply', errors: []});
 }
 
 /**
@@ -139,9 +138,9 @@ function showErrors(req, res, next) {
   if (!validation.isEmpty()) {
     const errors = validation.array();
     data.errors = errors;
-    data.title = 'Avinnuumsókn – vandræði';
+    const title = 'Avinnuumsókn – vandræði';
 
-    return res.render('form', { title: data.title, data, page: 'apply' });
+    return res.render('form', { title, data, page: 'apply', errors: [] });
   }
 
   return next();
