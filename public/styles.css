@@ -135,14 +135,36 @@ button:hover {
 .userHead, .userInfo {
   min-width: 33.333%;
 }
-.userHead {
+
+.adminUserHead, .adminUserInfo {
+  min-width: 25%;
+}
+
+.userHead, .adminUserHead {
   font-weight: bold;
 }
+
 .users:nth-child(2n){
   background-color: #bbb;
 }
+
 .admin{
   overflow: auto;
+}
+
+.page, .thisPage {
+  text-decoration: none;
+  color: black;
+  padding-right: 24px;
+}
+
+.thisPage {
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.header{
+  padding-bottom: 48px;
 }
 
 
@@ -162,5 +184,5 @@ button:hover {
   .field input {
     flex: 1;
   }
-  
+
 }
