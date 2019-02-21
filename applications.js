@@ -24,12 +24,14 @@ function catchErrors(fn) {
 async function applications(req, res) {
   const list = await select();
 
+  /*
   const data = {
     title: 'Umsóknir',
     list,
   };
+  */
 
-  return res.render('applications', data);
+  return res.render('applications', { title: 'Umsóknir', list, page:'application' });
 }
 
 /**

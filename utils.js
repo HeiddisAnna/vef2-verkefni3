@@ -8,8 +8,18 @@ function catchErrors(fn) {
   return (req, res, next) => fn(req, res, next).catch(next);
 }
 
-/* todo bæta við fleiri hjálparföllum */
+/* Ef notandi er loggaður inn fer hann á næstu, 
+annars er hann ennþá í log in */
+function ensureLoggedIn(req, res, next) {
+  console.log(req.isAuthenticated());
+  
+  if(req.isAuthenticated()) {
+    return next();
+  }
+  return res.redirect('/login');
+}
 
 module.exports = {
   catchErrors,
+  ensureLoggedIn,
 };

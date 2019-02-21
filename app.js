@@ -2,12 +2,15 @@ require('dotenv').config();
 
 const path = require('path');
 const express = require('express');
+const session = require('express-session');
+const passport = require('passport');
+const { Strategy } = require('passport-local');
 
+const users = require('./users');
 const apply = require('./apply');
 const register = require('./register');
 const admin = require('./admin');
 const applications = require('./applications');
-const validateLogin = require('./login');
 
 /* todo sækja stillingar úr env */
 const sessionSecret = process.env.SESSION_SECRET;
@@ -18,6 +21,15 @@ if (!sessionSecret) {
 }
 
 const app = express();
+
+app.use(session({
+  secret: sessionSecret,
+  resave: false,
+  saveUninitialized: false,
+  maxAge: 30 * 60 *24 * 1000, // 20 sek
+}));
+
+app.use(express.urlencoded({ extended: true }));
 
 /* todo stilla session og passport */
 
@@ -48,17 +60,12 @@ function thanks(req, res) {
 }
 
 function login(req, res) {
-
-  res.render('login', { title: 'login', username: '', password: '', errors: [] });
+  res.render('login', { title: 'login', username: '', password: '', errors: [], page: 'login' });
 }
 
-app.get('/login', login);
-app.get('/thanks', thanks);
-app.use('/login', validateLogin);
-app.use('/', apply);
-app.use('/register', register);
-app.use('/applications', applications);
-app.use('/admin', admin);
+function thanksApplicaton(req, res) {
+  res.render('thanks', { title: 'Takk fyrir umsóknina', page: 'thanks' });
+}
 
 function notFoundHandler(req, res, next) { // eslint-disable-line
   res.status(404).render('error', { page: 'error', title: '404', error: '404 fannst ekki' });
@@ -68,6 +75,95 @@ function errorHandler(error, req, res, next) { // eslint-disable-line
   console.error(error);
   res.status(500).render('error', { page: 'error', title: 'Villa', error });
 }
+
+/* Log in */
+
+async function start(username, password, done) {
+  try {
+    const user = await users.findByUsername(username);
+    if (!user) {
+      return done(null, false);
+    }
+
+    const result = await users.comparePassword(password, user);
+    return done(null, result);
+  } catch (err) {
+    console.log(err);
+    return done(null, err);
+  }
+}
+
+passport.use(new Strategy(start));
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await users.findById(id);
+    done(null, user);
+  } catch (err) {
+    done(err);
+  }
+});
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use((req, res, next) => {
+  if (req.isAuthenticated()) {
+    res.locals.user = req.user;
+    res.locals.login = req.isAuthenticated();
+    res.locals.isAdmin = req.user.admin;
+  }
+  next();
+});
+
+app.use('/', apply);
+
+app.get('/', (req, res) => {
+  if (req.isAuthenticated()) {
+    return res.redirect('/applications', applications);
+  }
+  return res.redirect('/login');  
+});
+
+app.get('/login', (req, res) => {
+  /*
+  let message = '';
+  
+  if (req.session.message && req.session.message.length > 0) {
+    message = req.session.message.join(', ');
+    req.session.message = [];
+  }
+  */
+  res.render('login', { title: 'innskraning', username: '', password: '', errors: [], page: 'login' });
+});
+
+app.post('/login',
+  passport.authenticate('local', {
+    failureMessage: 'Notandi eða lykilorð vitlaust.',
+    failureRedirect: '/login',
+  }),
+  (req, res) => {
+    res.redirect('/applications');
+  },
+);
+
+app.get('logout', (req, res) => {
+  req.logout();
+  res.redirect('/');
+});
+
+app.use('/thanks', thanksApplicaton);
+app.get('/thanks', thanks);
+// app.use('/', apply);
+app.use('/register', register);
+app.use('/applications', applications);
+app.use('/admin', admin);
+
+/* **** */
 
 app.use(notFoundHandler);
 app.use(errorHandler);

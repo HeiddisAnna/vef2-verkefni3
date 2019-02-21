@@ -13,3 +13,18 @@
 
     </header>
     <main>
+      <div class= "header">
+          
+
+
+        <% if (locals.user){ %>
+          <p>Er innskráð !!!</p>
+
+        <% } else { %>
+
+            <a class="<%= page === 'apply'? 'thisPage':''%>" href="./">Atvinnuumsókn</a>
+            <a href="./login">Innskráning</a>
+            <a href="./register">Nýskráning</a>
+        <% } %>
+      </div>
+      

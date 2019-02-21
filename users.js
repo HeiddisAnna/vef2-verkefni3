@@ -1,4 +1,5 @@
 const { Client } = require('pg');
+const bcrypt = require('bcrypt');
 
 const connectionString = process.env.DATABASE_URL;
 
@@ -19,12 +20,14 @@ async function query(q, values = []) {
 }
 
 async function insert(data) {
+  const hashedPassword = await bcrypt.hash(data.password, 11);
+
   const q = `
-INSERT INTO users
-(username, password, name, email, admin)
-VALUES
-($1, $2, $3, $4, $5)`;
-  const values = [data.username, data.password, data.name, data.email, data.admin];
+  INSERT INTO users
+  (username, password, name, email, admin)
+  VALUES
+  ($1, $2, $3, $4, $5)`;
+  const values = [data.username, hashedPassword, data.name, data.email, data.admin];
 
   return query(q, values);
 }
@@ -50,13 +53,40 @@ async function deleteRow(id) {
   return query(q, id);
 }
 
-async function validPassword(password1, password2) {
-  if(password1 === password2) {
-    return true;
-  } else { 
-      return false;
+async function comparePassword(password, user) {
+  // const ok = await bcrypt.compare(password, user.password);
+  const ok = await bcrypt.compare(password, user.password);
+
+  if (ok) {
+    return user;
   }
+  return false;
 }
+
+async function findByUsername(username) {
+  const q = 'SELECT * FROM users WHERE username = $1';
+  const result = await query(q, [username]);
+  
+  if (result.rows.length > 0) {
+    const found = result.rows[0];
+    return Promise.resolve(found);
+  } 
+
+  return Promise.resolve(null);
+}
+
+async function findById(id) {
+  const q = 'SELECT * FROM users WHERE id = $1';
+  const result = await query(q, [id]);
+
+  if (result.rows.length > 0) {
+    const found = result.rows[0];
+    return Promise.resolve(found);
+  } 
+
+  return Promise.resolve(null);
+}
+
 
 module.exports = {
   query,
@@ -64,6 +94,8 @@ module.exports = {
   select,
   update,
   deleteRow, // delete er frátekið orð
-  validPassword,
+  comparePassword,
+  findByUsername,
+  findById,
 };
 

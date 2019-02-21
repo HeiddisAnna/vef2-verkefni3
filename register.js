@@ -2,8 +2,9 @@ const xss = require('xss');
 const express = require('express');
 const { check, validationResult } = require('express-validator/check');
 const { sanitize } = require('express-validator/filter');
+const bcrypt = require('bcrypt');
 
-const { insert, validPassword, query } = require('./users');
+const { insert, query } = require('./users');
 
 const router = express.Router();
 
@@ -41,12 +42,6 @@ const sanitazions = [
 
   sanitizeXss('username'),
   sanitize('username').trim().escape(),
-
-  sanitizeXss('password1'),
-  sanitize('password1').trim().escape(),
-
-  sanitizeXss('password2'),
-  sanitize('password2').trim().escape(),
 ]
 
 const validations = [
@@ -72,7 +67,7 @@ async function register(req, res) {
     admin: false,
     errors: [],
   };
-  res.render('register', { title: 'Nýskráning', data });
+  res.render('register', { title: 'Nýskráning', data, page: 'register' });
 }
 
 function showErrors(req, res, next) {
@@ -103,7 +98,7 @@ function showErrors(req, res, next) {
     data.errors = errors;
     const title = 'Nýskráning – vandræði';
 
-    return res.render('register', { title, data });
+    return res.render('register', { title, data, page:'register' });
   }
 
   return next();
@@ -130,12 +125,15 @@ async function registerPost(req, res) {
   };
   data.password = password1;
 
+  console.log('lykilorð: ' + data.password);
+
   await insert(data);
+
   return res.redirect('register/thanks');
 }
 
 function thanks(req, res) {
-  res.render('thanks', { title: 'Takk' });
+  res.render('thanks', { title: 'Takk', page:'thanks' });
 }
 
 router.get('/', register);
