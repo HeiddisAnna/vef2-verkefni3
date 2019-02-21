@@ -42,12 +42,6 @@ const sanitazions = [
 
   sanitizeXss('username'),
   sanitize('username').trim().escape(),
-
-  sanitizeXss('password1'),
-  sanitize('password1').trim().escape(),
-
-  sanitizeXss('password2'),
-  sanitize('password2').trim().escape(),
 ]
 
 const validations = [

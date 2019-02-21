@@ -22,6 +22,13 @@ if (!sessionSecret) {
 
 const app = express();
 
+app.use(session({
+  secret: sessionSecret,
+  resave: false,
+  saveUninitialized: false,
+  maxAge: 30 * 60 *24 * 1000, // 20 sek
+}));
+
 app.use(express.urlencoded({ extended: true }));
 
 /* todo stilla session og passport */
@@ -56,12 +63,9 @@ function login(req, res) {
   res.render('login', { title: 'login', username: '', password: '', errors: [] });
 }
 
-app.get('/login', login);
-app.get('/thanks', thanks);
-app.use('/', apply);
-app.use('/register', register);
-app.use('/applications', applications);
-app.use('/admin', admin);
+function thanksApplicaton(req, res) {
+  res.render('thanks', { title: 'Takk fyrir umsóknina'});
+}
 
 function notFoundHandler(req, res, next) { // eslint-disable-line
   res.status(404).render('error', { page: 'error', title: '404', error: '404 fannst ekki' });
@@ -110,32 +114,21 @@ app.use(passport.session());
 app.use((req, res, next) => {
   if (req.isAuthenticated()) {
     res.locals.user = req.user;
+    res.locals.login = req.isAuthenticated();
+    res.locals.isAdmin = req.user.admin;
   }
   next();
 });
-
-app.get('admin', ensureLoggedIn, (req, res, next) => {
-  next();
-});
-
-/* Ef notandi er loggaður inn fer hann á næstu, 
-annars er hann ennþá í log in */
-function ensureLoggedIn(req, res, next) {
-  if(req.isAuthenticated()) {
-    return next();
-  }
-  return res.redirect('/login');
-}
 
 app.get('/', (req, res) => {
   if (req.isAuthenticated()) {
     return res.send('/applications', applications);
   }
-  return res.send('/login');  
+  return res.redirect('/login');  
 });
 
 app.get('/login', (req, res) => {
-  /* 
+  /*
   let message = '';
   
   if (req.session.message && req.session.message.length > 0) {
@@ -143,7 +136,7 @@ app.get('/login', (req, res) => {
     req.session.message = [];
   }
   */
-  res.send('login', { title: 'innskraning', errors: [] });
+  res.render('login', { title: 'innskraning', username: '', password: '', errors: [] });
 });
 
 app.post('/login',
@@ -152,7 +145,7 @@ app.post('/login',
     failureRedirect: '/login',
   }),
   (req, res) => {
-    res.redirect('/admin');
+    res.redirect('/applications');
   },
 );
 
@@ -161,9 +154,12 @@ app.get('logout', (req, res) => {
   res.redirect('/');
 });
 
-app.get('/admin', ensureLoggedIn, (req, res) => {
-  app.use('/applications', applications);
-});
+app.use('/thanks', thanksApplicaton);
+app.get('/thanks', thanks);
+app.use('/', apply);
+app.use('/register', register);
+app.use('/applications', applications);
+app.use('/admin', admin);
 
 /* **** */
 

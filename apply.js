@@ -102,6 +102,7 @@ function form(req, res) {
     text: '',
     job: '',
     errors: [],
+    
   };
   res.render('form', data);
 }

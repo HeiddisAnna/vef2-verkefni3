@@ -57,8 +57,6 @@ async function comparePassword(password, user) {
   // const ok = await bcrypt.compare(password, user.password);
   const ok = await bcrypt.compare(password, user.password);
 
-  console.log('ok er: ' + ok);
-
   if (ok) {
     return user;
   }
