@@ -1,6 +1,7 @@
 const express = require('express');
 
 const { select, update, deleteRow } = require('./db');
+const { ensureLoggedIn } = require('./utils');
 
 const router = express.Router();
 
@@ -57,7 +58,7 @@ async function deleteApplication(req, res) {
   return res.redirect('/applications');
 }
 
-router.get('/', catchErrors(applications));
+router.get('/', ensureLoggedIn, catchErrors(applications));
 router.post('/process', catchErrors(processApplication));
 router.post('/delete', catchErrors(deleteApplication));
 

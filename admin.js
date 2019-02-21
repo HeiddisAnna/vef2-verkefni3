@@ -31,7 +31,7 @@ async function adminUser(req, res) {
   res.render('admin', { title: 'Notendalisti', list, page: 'admin' });
 }
 
-router.get('/', ensureLoggedIn, admin);
+router.get('/', ensureLoggedIn, catchErrors(admin));
 router.post('/', adminUser);
 
 module.exports = router;
