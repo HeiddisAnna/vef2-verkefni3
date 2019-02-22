@@ -93,7 +93,6 @@ async function setAdminFalse() {
 
 async function setAdmin(usernames) {
   const q = 'UPDATE users SET admin = true WHERE username = $1';
-  console.log(usernames);
   for(let i=0; i<usernames.length; i++){
     const result = await query(q, [usernames[i]]);
   }

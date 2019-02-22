@@ -54,6 +54,7 @@ const validations = [
     return result.rowCount === 0;
   }).withMessage('Notendanafn er núþegar til'),
   check('password1').isLength({ min: 8 }).withMessage('Lykilorð verður að vera minnst 8 stafir'),
+  check('password2').isLength({ min: 8 }).withMessage('Lykilorð verður að vera minnst 8 stafir'),
   check('password1').custom((val, { req }) => val === req.body.password2).withMessage('Lykilorðin verða að vera eins'),
 ]
 
@@ -131,7 +132,7 @@ async function registerPost(req, res) {
 }
 
 function thanks(req, res) {
-  res.render('thanks', { title: 'Takk', page:'thanks' });
+  res.render('thanks', { title: 'Takk', thanksTitle: 'Nýskráning tókst', thanksText: 'Þú getur nú innskráð þig með notandanafni og lykilorði', page:'thanks' });
 }
 
 router.get('/', register);

@@ -66,7 +66,7 @@ function login(req, res) {
 }
 
 function thanksApplicaton(req, res) {
-  res.render('thanks', { title: 'Takk fyrir umsóknina', page: 'thanks' });
+  res.render('thanks', { title: 'Takk fyrir umsóknina', thanksTitle: 'Takk fyrir umsóknina', thanksText: 'Við munum hafa samban innan skamms', page: 'thanks' });
 }
 
 function notFoundHandler(req, res, next) { // eslint-disable-line
@@ -131,15 +131,14 @@ app.get('/', (req, res) => {
   return res.redirect('/login');
 });
 
-app.get('/login', (req, res) => {
-  /*
-  let message = '';
+app.get('/login', (req, res) => { 
+  let errors = '';
   
-  if (req.session.message && req.session.message.length > 0) {
-    message = req.session.message.join(', ');
-    req.session.message = [];
+  if (req.session.errors && req.session.errors.length > 0) {
+    errors = req.session.errors.join(', ');
+    req.session.errors = [];
   }
-  */
+  
   res.render('login', { title: 'innskraning', username: '', password: '', errors: [], page: 'login' });
 });
 
@@ -159,7 +158,7 @@ app.get('/logout', (req, res) => {
 });
 
 app.use('/thanks', thanksApplicaton);
-app.get('/thanks', thanks);
+// app.get('/thanks', thanks);
 // app.use('/', apply);
 app.use('/register', register);
 app.use('/applications', applications);

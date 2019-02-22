@@ -152,10 +152,18 @@ button:hover {
   overflow: auto;
 }
 
-.page, .thisPage {
+.page, .thisPage, .logOut {
   text-decoration: none;
   color: black;
   padding-right: 24px;
+}
+
+.logOut {
+  font-weight: bold;
+}
+
+.logOut:hover {
+  text-decoration: underline;
 }
 
 .thisPage {
@@ -163,8 +171,8 @@ button:hover {
   font-weight: bold;
 }
 
-.header{
-  padding-bottom: 48px;
+.titles {
+  padding-bottom: 22px;
 }
 
 
@@ -183,6 +191,15 @@ button:hover {
 
   .field input {
     flex: 1;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .titles {
+    padding-bottom: 48px;
   }
 
 }

@@ -184,7 +184,7 @@ async function formPost(req, res) {
  * @param {object} res Response hlutur
  */
 function thanks(req, res) {
-  return res.render('thanks', { title: 'Takk fyrir umsóknina', page: 'thanks' });
+  return res.render('thanks', { title: 'Takk fyrir umsóknina', thanksTitle:'Takk fyrir umsóknina', thanksText: 'Við munum hafa samban innan skamms', page: 'thanks' });
 }
 
 router.get('/', form);
