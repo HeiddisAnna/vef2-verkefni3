@@ -94,6 +94,7 @@ async function setAdminFalse() {
 async function setAdmin(usernames) {
   const q = 'UPDATE users SET admin = true WHERE username = $1';
   for (let i=0; i<usernames.length; i++) {// eslint-disable-line
+    console.log('Notandi er admin: ' + usernames[i]);
     const result = await query(q, [usernames[i]]); // eslint-disable-line
   }
 }
