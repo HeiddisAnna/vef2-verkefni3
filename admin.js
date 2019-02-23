@@ -1,10 +1,5 @@
-const xss = require('xss');
 const express = require('express');
-const { check, validationResult } = require('express-validator/check');
-const { sanitize } = require('express-validator/filter');
-const bcrypt = require('bcrypt');
-
-const { insert, query, select, setAdmin, setAdminFalse } = require('./users');
+const { select, setAdmin, setAdminFalse } = require('./users');
 const { ensureLoggedIn } = require('./utils');
 
 const router = express.Router();
@@ -20,13 +15,10 @@ async function admin(req, res) {
 }
 
 async function adminUser(req, res) {
-  //Setjum alla notendur með false
   await setAdminFalse();
-
-  //Setjum þá sem voru valdir sem admin
   const usernames = req.body.admin;
   await setAdmin(usernames);
-  
+
   const list = await select();
   res.render('admin', { title: 'Notendalisti', list, page: 'admin' });
 }

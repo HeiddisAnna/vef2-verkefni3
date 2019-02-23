@@ -12,8 +12,6 @@ const register = require('./register');
 const admin = require('./admin');
 const applications = require('./applications');
 
-const connectionString = process.env.DATABASE_URL || 'postgres://Esjan2020:@localhost/v2';
-
 /* todo sækja stillingar úr env */
 const sessionSecret = process.env.SESSION_SECRET;
 
@@ -57,16 +55,12 @@ app.locals.isInvalid = isInvalid;
 
 /* todo setja upp login og logout virkni */
 
-function thanks(req, res) {
-  res.redirect('/login');
-}
-
-function login(req, res) {
-  res.render('login', { title: 'login', username: '', password: '', errors: [], page: 'login' });
+function login(req, res) {  // eslint-disable-line
+  res.render('login', { title: 'login', username: '', password: '', errors: [], page: 'login' }); // eslint-disable-line
 }
 
 function thanksApplicaton(req, res) {
-  res.render('thanks', { title: 'Takk fyrir umsóknina', thanksTitle: 'Takk fyrir umsóknina', thanksText: 'Við munum hafa samban innan skamms', page: 'thanks' });
+  res.render('thanks', { title: 'Takk fyrir umsóknina', thanksTitle: 'Takk fyrir umsóknina', thanksText: 'Við munum hafa samban innan skamms', page: 'thanks' }); // eslint-disable-line
 }
 
 function notFoundHandler(req, res, next) { // eslint-disable-line
@@ -90,7 +84,7 @@ async function start(username, password, done) {
     const result = await users.comparePassword(password, user);
     return done(null, result);
   } catch (err) {
-    console.log(err);
+    console.log(err);  // eslint-disable-line
     return done(null, err);
   }
 }
@@ -131,15 +125,15 @@ app.get('/', (req, res) => {
   return res.redirect('/login');
 });
 
-app.get('/login', (req, res) => { 
-  let errors = '';
-  
+app.get('/login', (req, res) => {
+  let errors = ''; // eslint-disable-line
+
   if (req.session.errors && req.session.errors.length > 0) {
     errors = req.session.errors.join(', ');
     req.session.errors = [];
   }
-  
-  res.render('login', { title: 'innskraning', username: '', password: '', errors: [], page: 'login' });
+
+  res.render('login', { title: 'innskraning', username: '', password: '', errors: [], page: 'login' }); // eslint-disable-line
 });
 
 app.post('/login',
@@ -150,7 +144,7 @@ app.post('/login',
   (req, res) => {
     res.redirect('/applications');
   },
-);
+); // eslint-disable-line
 
 app.get('/logout', (req, res) => {
   req.logout();
@@ -164,8 +158,6 @@ app.use('/register', register);
 app.use('/applications', applications);
 app.use('/admin', admin);
 
-/* **** */
-
 app.use(notFoundHandler);
 app.use(errorHandler);
 
@@ -175,6 +167,5 @@ const hostname = '127.0.0.1';
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
-  console.log(`Running@ http://${hostname}:${port}/`);
+  console.log(`Running@ http://${hostname}:${port}/`);  // eslint-disable-line
 });
-

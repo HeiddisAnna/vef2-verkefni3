@@ -2,7 +2,6 @@ const xss = require('xss');
 const express = require('express');
 const { check, validationResult } = require('express-validator/check');
 const { sanitize } = require('express-validator/filter');
-const bcrypt = require('bcrypt');
 
 const { insert, query } = require('./users');
 
@@ -28,7 +27,7 @@ function sanitizeXss(fieldName) {
   };
 }
 
-function findUserName(user){
+function findUserName(user) {
   const q = 'SELECT * FROM users WHERE username = $1';
   return query(q, [user]);
 }
@@ -42,13 +41,13 @@ const sanitazions = [
 
   sanitizeXss('username'),
   sanitize('username').trim().escape(),
-]
+];
 
 const validations = [
-  check('name').isLength({ min:1 }).withMessage('Nafn má ekki vera tómt'),
-  check('email').isLength({ min:1 }).withMessage('Netfang má ekki vera tómt'),
+  check('name').isLength({ min: 1 }).withMessage('Nafn má ekki vera tómt'),
+  check('email').isLength({ min: 1 }).withMessage('Netfang má ekki vera tómt'),
   check('email').isEmail().withMessage('Netfang verður að vera netfang'),
-  check('username').isLength({ min:1 }).withMessage('Notandanafn má ekki vera tómt'),
+  check('username').isLength({ min: 1 }).withMessage('Notandanafn má ekki vera tómt'),
   check('username').custom(async (val) => {
     const result = await findUserName(val);
     return result.rowCount === 0;
@@ -56,7 +55,7 @@ const validations = [
   check('password1').isLength({ min: 8 }).withMessage('Lykilorð verður að vera minnst 8 stafir'),
   check('password2').isLength({ min: 8 }).withMessage('Lykilorð verður að vera minnst 8 stafir'),
   check('password1').custom((val, { req }) => val === req.body.password2).withMessage('Lykilorðin verða að vera eins'),
-]
+];
 
 async function register(req, res) {
   const data = {
@@ -84,10 +83,10 @@ function showErrors(req, res, next) {
   } = req;
 
   const data = {
-    username, 
+    username,
     password1,
-    password2, 
-    name, 
+    password2,
+    name,
     email,
     admin,
   };
@@ -99,9 +98,8 @@ function showErrors(req, res, next) {
     data.errors = errors;
     const title = 'Nýskráning – vandræði';
 
-    return res.render('register', { title, data, page:'register' });
+    return res.render('register', { title, data, page: 'register' });
   }
-
   return next();
 }
 
@@ -110,17 +108,16 @@ async function registerPost(req, res) {
     body: {
       username = '',
       password1 = '',
-      password2 = '',
+      password2 = '', // eslint-disable-line
       name = '',
       email = '',
       admin = false,
     } = {},
   } = req;
 
-  
   const data = {
-    username,  
-    name, 
+    username,
+    name,
     email,
     admin,
   };
@@ -132,7 +129,7 @@ async function registerPost(req, res) {
 }
 
 function thanks(req, res) {
-  res.render('thanks', { title: 'Takk', thanksTitle: 'Nýskráning tókst', thanksText: 'Þú getur nú innskráð þig með notandanafni og lykilorði', page:'thanks' });
+  res.render('thanks', { title: 'Takk', thanksTitle: 'Nýskráning tókst', thanksText: 'Þú getur nú innskráð þig með notandanafni og lykilorði', page: 'thanks' }); // eslint-disable-line
 }
 
 router.get('/', register);

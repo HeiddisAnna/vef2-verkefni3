@@ -25,7 +25,7 @@ function catchErrors(fn) {
 async function applications(req, res) {
   const list = await select();
 
-  return res.render('applications', { title: 'Umsóknir', list, page:'application' });
+  return res.render('applications', { title: 'Umsóknir', list, page: 'application' });
 }
 
 /**
@@ -62,4 +62,4 @@ router.get('/', ensureLoggedIn, catchErrors(applications));
 router.post('/process', catchErrors(processApplication));
 router.post('/delete', catchErrors(deleteApplication));
 
-module.exports = router;
+module.exports = router; // eslint-disable-line

@@ -56,4 +56,4 @@ module.exports = {
   select,
   update,
   deleteRow, // delete er frátekið orð
-};
+}; // eslint-disable-line

@@ -102,7 +102,7 @@ function form(req, res) {
     job: '',
     errors: [],
   };
-  res.render('form', { title: 'Atvinnuumsókn', data, page: 'apply', errors: []});
+  res.render('form', { title: 'Atvinnuumsókn', data, page: 'apply', errors: []}); // eslint-disable-line
 }
 
 /**
@@ -140,7 +140,7 @@ function showErrors(req, res, next) {
     data.errors = errors;
     const title = 'Avinnuumsókn – vandræði';
 
-    return res.render('form', { title, data, page: 'apply', errors: [] });
+    return res.render('form', { title, data, page: 'apply', errors: [] }); // eslint-disable-line
   }
 
   return next();
@@ -184,7 +184,7 @@ async function formPost(req, res) {
  * @param {object} res Response hlutur
  */
 function thanks(req, res) {
-  return res.render('thanks', { title: 'Takk fyrir umsóknina', thanksTitle:'Takk fyrir umsóknina', thanksText: 'Við munum hafa samban innan skamms', page: 'thanks' });
+  return res.render('thanks', { title: 'Takk fyrir umsóknina', thanksTitle: 'Takk fyrir umsóknina', thanksText: 'Við munum hafa samban innan skamms', page: 'thanks' });  // eslint-disable-line
 }
 
 router.get('/', form);
@@ -202,4 +202,4 @@ router.post(
   catchErrors(formPost),
 );
 
-module.exports = router;
+module.exports = router; // eslint-disable-line
