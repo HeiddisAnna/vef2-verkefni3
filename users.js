@@ -1,6 +1,7 @@
 const { Client } = require('pg');
 const bcrypt = require('bcrypt');
 
+const sessionSecret = process.env.SESSION_SECRET;
 const connectionString = process.env.DATABASE_URL;
 
 async function query(q, values = []) {
@@ -20,7 +21,7 @@ async function query(q, values = []) {
 }
 
 async function insert(data) {
-  const hashedPassword = await bcrypt.hash(data.password, 11);
+  const hashedPassword = await bcrypt.hash(data.password, sessionSecret);
 
   const q = `
   INSERT INTO users
